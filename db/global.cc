@@ -3,10 +3,11 @@
 // just used to test more KVs
 // in beta version, we support 2 nvm numa nodes
 int nvm_node = 2;
-int nvm_next_node = 4;
+int nvm_next_node = -1;
 size_t nvm_free_space = 384L * 1024 * 1024 * 1024;
+size_t nvm_limit = 8L * 1024 * 1024 * 1024;
 bool nvm_node_has_changed = false;
-size_t nvm_actual_use = 0L;
+volatile size_t nvm_actual_use = 0L;
 size_t nvm_use_max = 0L;
 std::ofstream ofs;
 long long nvm_total = 0L;
@@ -24,6 +25,7 @@ void NvmNodeSizeInit(const Options& options_) {
 
 // we do not consider the released memory in beta version
 void NvmNodeSizeRecord(size_t s) {
+    while (nvm_actual_use + s > nvm_limit);
     nvm_actual_use += s;
     if (nvm_use_max < nvm_actual_use) {
         nvm_use_max = nvm_actual_use;

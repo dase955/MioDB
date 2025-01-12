@@ -5,6 +5,7 @@
 #include "util/arena.h"
 #include "string.h"
 #include "db/global.h"
+#include <sys/mman.h>
 
 namespace leveldb {
 
@@ -36,6 +37,7 @@ Arena::~Arena() {
   } else if (!Transfer) {
     int j = 0;
     for (size_t i = 0; i < blocks_.size(); i++) {
+        //madvise(blocks_[i], block_size_[i], MADV_DONTNEED);
         numa_free(blocks_[i], block_size_[i]);
     }
 

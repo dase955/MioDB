@@ -782,7 +782,8 @@ void DBImpl::CompactPmTable() {
   }
 
   if (s.ok()) {
-    // pt->UnRef();
+    // must delete pmtable to release space
+    pt->UnRef();
     pt = nullptr;
     eb_->RemoveFile(config::kNumLevels - 1, 1);
   } else {

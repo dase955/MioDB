@@ -5,6 +5,7 @@
 #include "numa.h"
 #include <assert.h>
 #include "leveldb/options.h"
+#include <sys/mman.h>
 #define INITIAL_SIZE 512
 
 namespace leveldb {
@@ -23,6 +24,7 @@ public:
                         tail_(0),
                         ptr_((T*)numa_alloc_onnode(cap_ * sizeof(T), numa_node_)) {}
   ~Array() {
+    //madvise(ptr_, cap_ * sizeof(T), MADV_DONTNEED);
     numa_free(ptr_, cap_ * sizeof(T));
   }
   void init(const Options *ops) {
@@ -51,6 +53,7 @@ public:
     for (int i = 0; i < len; i++) {
       tmp[i] = ptr_[(head_ + i) % cap_];
     }
+    //madvise(ptr_, cap_, MADV_DONTNEED);
     numa_free(ptr_, cap_);
     head_ = 0;
     tail_ = len;

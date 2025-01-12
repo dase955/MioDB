@@ -24,7 +24,7 @@ namespace leveldb {
 namespace config {
 // modify by mio
 //static const int kNumLevels = 7;
-static const int kNumLevels = 8;
+static const int kNumLevels = 3;
 
 // Level-0 compaction is started when we hit this many files.
 // modify by mio

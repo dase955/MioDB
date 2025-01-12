@@ -32,6 +32,7 @@
 #include <cstdlib>
 #include <string.h>
 #include <iostream>
+#include <sys/mman.h>
 
 #include "util/arena.h"
 #include "util/random.h"
@@ -853,9 +854,11 @@ void SkipList<Key, Comparator>::LastTableDeleteNode(Node** pre, Node* n) {
     pre[i]->SetNext(i, n->Next(i));
   }
   wa += (8 * n->height);
+  //madvise(const_cast<char*>(n->key), n->len, MADV_DONTNEED);
   numa_free(const_cast<char*>(n->key), n->len);
   sizesum -= n->len;
   size_t tmp = sizeof(Node) + sizeof(std::atomic<Node*>) * (n->height - 1);
+  //madvise(n, tmp, MADV_DONTNEED);
   numa_free(n, tmp);
   sizesum -= tmp;
 }

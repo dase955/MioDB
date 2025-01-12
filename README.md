@@ -220,3 +220,25 @@ For the sensitivity studies of the size of dataset (Figure 10 and Figure 11 in t
 
 #### SSD-Supported MioDB Extension
 We have implemented SSD-Supported MioDB. We can download the code from the github repository of MioDB on ''ssd_extension'' branch. The compilation and evaluation method is same as the in-memory MioDB. The only difference between them is the *db_path* in db_bench and the *-dbpath* in YCSB. We need set these two parameters to a data path of SSD.
+
+## 测试须知
+
+ - test_sh/miodb_test.sh和ycsbc/input/*里的dbpath都改为SSD下的路径
+
+ - ycsbc/ycsb_build_env.sh需要改下
+
+ - ycsbc/core/Makefile、ycsbc/db/Makefile、ycsbc/Makefile里的CC都指向g++ (GCC) 4.8.5，编译miodb默认使用系统自带g++ (centos7 为 4.8.5)
+
+ - ycsbc/db/leveldb_db.cc 第34行的nvm numa node需要改下
+
+ - db/global.cc 里的nvm_limit就是nvm空间限制，目前添加了NVM空间限制
+
+ - db/dbformat.h 里修改kNumLevels为3，设置为1或2会报错
+
+ - nvm numa node需要设置在10GB左右
+
+ - ycsb dbpath文件夹必须存在，没有就建一个
+
+ - 测试前用whereis libleveldb检查有没有libleveldb.so文件，有就删除
+
+ - 进行测试前必须把测试的data文件夹删除

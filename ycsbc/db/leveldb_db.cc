@@ -19,6 +19,8 @@ namespace ycsbc {
 
         leveldb::Status s = leveldb::DB::Open(options, dbfilename, &db_);
 
+        // std::cout << "init db status: " << s.ToString() << std::endl;
+
         if(!s.ok()){
             cerr<<"Can't open leveldb "<<dbfilename<<endl;
             exit(0);
@@ -31,7 +33,7 @@ namespace ycsbc {
         options->compression = leveldb::kNoCompression;
 
         printf("set MioDB options!\n");
-        options->nvm_node = 0;
+        options->nvm_node = 2;
         options->nvm_next_node = -1;
         
     }

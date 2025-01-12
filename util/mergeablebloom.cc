@@ -2,6 +2,7 @@
 // Mergeable bloom filters can accelerate pmtables' query requests
 
 #include "util/mergeablebloom.h"
+#include <sys/mman.h>
 
 namespace leveldb {
 
@@ -21,6 +22,7 @@ MergeableBloom::MergeableBloom(const Options& options_): bits_per_key_(options_.
 }
 
 MergeableBloom::~MergeableBloom() {
+  //madvise(result_, result_size_, MADV_DONTNEED);
   numa_free(result_, result_size_);
 }
 

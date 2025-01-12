@@ -1,23 +1,23 @@
 #!/bin/bash
 
 # save .log LOG CURRENT MANIFEST...
-db_path="/home/jbyao/db_file"
+db_path="/home/guoteng_20241228_135/data/MioDB"
 # output file dir
-outfilepath="/home/jbyao/miodb/test"
+outfilepath="/home/guoteng_20241228_135/result/MioDB"
 # output file
 outfile="$outfilepath/result.out"
 # db_bench binary path
-bench_path="/home/jbyao/miodb/build"
+bench_path="/home/guoteng_20241228_135/MioDB/build"
 # total size of workload (Byte)
-test_size=81920000000
+test_size=40960000000
 # value size (Byte)
-size="4096"
+size="1024"
 # evaluate multi sizes of value once excution
 value_array=(1024 4096 16384 65536)
 # write KV num, test_size / size
-write_key_num="20000000"
+write_key_num="40000000"
 # read KV num
-read_key_num="1000000"
+read_key_num="100000"
 # test type in db_bench
 test_type="fillrandom,stats,readrandom,stats"
 # disable compression
@@ -45,7 +45,7 @@ RUN_ONE_TEST() {
                 --reads=$read_key_num \
                 --compression_ratio=$comp_ratio \
                 --db=$db_path \
-                --keys_per_datatable=$bench_keys_per_datatable \
+                --keys_per_pmtable=$bench_keys_per_datatable \
                 --dram_node=$numa_dram_node \
                 --nvm_node=$numa_nvm_node \
                 --nvm_next_node=$numa_nvm_next_node \

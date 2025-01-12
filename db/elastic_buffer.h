@@ -15,6 +15,7 @@
 #include "table/two_level_iterator.h"
 #include <iostream>
 #include "db/global.h"
+#include <sys/mman.h>
 
 namespace leveldb {
 struct PmMetaData {
@@ -25,6 +26,7 @@ struct PmMetaData {
   void UnRef() {
     refs--;
     if (refs <= 0) {
+      //madvise(this, sizeof(PmMetaData), MADV_DONTNEED);
       numa_free(this, sizeof(PmMetaData));
     }
   }

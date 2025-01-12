@@ -117,7 +117,7 @@ static int FLAGS_dram_node = 0;
 
 static int FLAGS_nvm_node = 2;
 
-static int FLAGS_nvm_next_node = 4;
+static int FLAGS_nvm_next_node = -1;
 
 // Use the db with the following name.
 static const char* FLAGS_db = nullptr;
